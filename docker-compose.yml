@@ -1,0 +1,28 @@
+version: '3.1'
+volumes: 
+  mysql-volume:
+  ghost-volume: 
+
+
+services:
+  mysql:
+    env_file: 
+      - .env
+    image: mysql:5.7
+    volumes:
+      - 'mysql-volume:/var/lib/mysql'
+  ghost:
+    env_file: 
+      - .env
+    build: ./ghost 
+    image: lvthillo/ghost:1.20.0 
+    container_name: ghost
+    volumes:
+      - ghost-volume:/var/lib/ghost
+    restart: always
+    ports: 
+      - 127.0.0.1:2368:2368
+    depends_on: 
+      - mysql 
+    entrypoint: ["wait-for-it.sh", "mysql", "--", "docker-entrypoint.sh"] 
+    command: ["node", "current/index.js"]
