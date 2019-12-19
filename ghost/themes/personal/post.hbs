@@ -1,0 +1,87 @@
+{{!< default}}
+
+<header class="project-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 col-xs-12">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="pull-left">
+              <a href="/">
+                <div class="header-profile-small"></div>
+              </a>
+            </div>
+            <div class="pull-left header-profile-small-text">
+              <div class="header-profile-small-title"><a href="/">Bastian Geneugelijk</a></div>
+              <div class="header-profile-small-description">I am a maker of digital products currently living in Amsterdam.<br/>As a data scientist with originally an interaction design background,<br/>I enjoy working with machine learning data problems that require human input.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+{{#post}}
+
+<div class="container single-project-section-left">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 col-xs-12 overview-project-single">
+      <div class="pull-left single-project-title-box" style="height: auto;">
+        <div class="single-project-title" style="margin-left: 0;"><h1>{{title}}</h1></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-10 col-xs-12">
+      <div class="pull-left">
+        <div class="single-project-meta">
+          <div class="date">{{date format="D MMM YYYY"}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{#if custom_excerpt}}
+<div class="container">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-10 col-xs-12">
+      <div class="pull-left">
+        <div class="single-project-abstract zero-mg-top">
+          {{custom_excerpt}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{/if}}
+
+<div class="container lg-mg-top">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-10 col-xs-12">
+      <div class="pull-left full-width">
+        <div class="single-project-text">
+          {{content}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{/post}}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="connect-intro">
+        <h3>Connect</h3><br/>
+        <button><a href="mailto:bastiangeneugelijk@me.com">Send me an email</a></button>
+        <a href="https://twitter.com/BGeneugelijk"><div class="twitter-icon"></div></a>
+      </div>
+    </div>
+  </div>
+</div>
