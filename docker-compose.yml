@@ -19,6 +19,7 @@ services:
     container_name: ghost
     volumes:
       - ghost-volume:/var/lib/ghost
+      - ./ghost/themes/personal:/var/lib/ghost/content/themes/personal
     restart: always
     ports: 
       - 127.0.0.1:2368:2368
@@ -26,3 +27,16 @@ services:
       - mysql 
     entrypoint: ["wait-for-it.sh", "mysql", "--", "docker-entrypoint.sh"] 
     command: ["node", "current/index.js"]
+  gatsby: 
+    build: ./ghost
+    ports:
+      - "8000:8000"
+      - "9929:9929"
+      - "9230:9230"
+      - "2368:2368"
+    volumes:
+      - /app/node_modules
+      - ./gatsby:/app
+    environment:
+      - NODE_ENV=development
+      - GATSBY_WEBPACK_PUBLICPATH=/
