@@ -1,5 +1,10 @@
 {
   "development": {
+    "apiUrl": "https://ghost.bastiangeneugelijk.com", 
+    "contentApiKey": "3a5e24e3b40af72c40e8172575",
+    "version": "v2"
+  },
+  "development2": {
     "apiUrl": "http://0.0.0.0:2368",
     "contentApiKey": "d42a6d026d7766d2ed48df892a", 
     "version": "v2"

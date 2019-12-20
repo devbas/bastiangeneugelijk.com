@@ -20,12 +20,12 @@ const PostCard = ({ post }) => {
                     <div className="pull-left overview-blog-title-box full-width">
                       <div className="overview-blog-title h3 left">{post.title}</div>
                     </div>
-                    <div class="pull-left overview-blog-meta full-width">
-                      <div class="date"><time datetime={post.published_at}>{post.published_at_pretty}</time></div>
+                    <div className="pull-left overview-blog-meta full-width">
+                      <div className="date"><time dateTime={post.published_at}>{post.published_at_pretty}</time></div>
                     </div>
-                    <div class="pull-left overview-project-description-box">
-                      <div class="overview-blog-description">
-                        <h4 class="overview-project-subtitle light">{post.custom_excerpt}</h4>
+                    <div className="pull-left overview-project-description-box">
+                      <div className="overview-blog-description">
+                        <h4 className="overview-project-subtitle light">{post.custom_excerpt}</h4>
                       </div>
                     </div>
                   </div>

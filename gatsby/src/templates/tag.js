@@ -12,47 +12,59 @@ import { MetaData } from '../components/common/meta'
 *
 */
 const Tag = ({ data, location, pageContext }) => {
-    const tag = data.ghostTag
-    const posts = data.allGhostPost.edges
+  const tag = data.ghostTag
+  const posts = data.allGhostPost.edges
 
-    return (
-        <>
-            <MetaData
-                data={data}
-                location={location}
-                type="series"
-            />
-            <Layout>
-                <div className="container">
-                    <header className="tag-header">
-                        <h1>{tag.name}</h1>
-                        {tag.description ? <p>{tag.description}</p> : null }
-                    </header>
-                    <section className="post-feed">
-                        {posts.map(({ node }) => (
-                            // The tag below includes the markup for each post - components/common/PostCard.js
-                            <PostCard key={node.id} post={node} />
-                        ))}
-                    </section>
-                    <Pagination pageContext={pageContext} />
-                </div>
-            </Layout>
-        </>
-    )
+  return (
+    <>
+      <MetaData
+        data={data}
+        location={location}
+        type="series"
+      />
+      <Layout>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8 col-md-offset-2">
+              <div className="tag-header">
+                {/* <h1>{tag.name}</h1> */}
+                {/* {tag.description ? <p>{tag.description}</p> : null} */}
+              </div>
+            </div>
+          </div> 
+        </div>
+        <section className="coffee-table">
+          <div className="container">
+            {posts.map(({ node }) => (
+              // The tag below includes the markup for each post - components/common/PostCard.js
+              <PostCard key={node.id} post={node} />
+            ))}
+          </div>
+        </section>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8 col-md-offset-2">
+              <Pagination pageContext={pageContext} />
+            </div>
+          </div>
+        </div>
+      </Layout>
+    </>
+  )
 }
 
 Tag.propTypes = {
-    data: PropTypes.shape({
-        ghostTag: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            description: PropTypes.string,
-        }),
-        allGhostPost: PropTypes.object.isRequired,
-    }).isRequired,
-    location: PropTypes.shape({
-        pathname: PropTypes.string.isRequired,
-    }).isRequired,
-    pageContext: PropTypes.object,
+  data: PropTypes.shape({
+    ghostTag: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      description: PropTypes.string,
+    }),
+    allGhostPost: PropTypes.object.isRequired,
+  }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
+  pageContext: PropTypes.object,
 }
 
 export default Tag
