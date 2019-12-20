@@ -1,0 +1,1 @@
+export { default as PublicTransportAssistant } from './public-transport/PublicTransportAssistant'

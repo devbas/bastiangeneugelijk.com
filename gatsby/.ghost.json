@@ -6,7 +6,7 @@
   },
   "production": {
     "apiUrl": "http://0.0.0.0:2368",
-    "contentApiKey": "d42a6d026d7766d2ed48df892a", 
+    "contentApiKey": "d42a6d026d7766d2ed48df892a",
     "version": "v2"
   }
 }

@@ -4,7 +4,7 @@ about: Report reproducible software issues so we can improve
 
 ---
 
-Welcome to the Gatsby Source Ghost GitHub repo! 👋🎉
+Welcome to the Gatsby Starter Ghost GitHub repo! 👋🎉
 
 We use GitHub only for bug reports 🐛
 
@@ -32,6 +32,5 @@ Any other info e.g. Why do you consider this to be a bug? What did you expect to
 
 * Ghost Version:
 * Gatsby Version:
-* Gatsby Source Ghost Version:
 * Node Version:
 * OS:

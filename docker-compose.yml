@@ -28,12 +28,12 @@ services:
     entrypoint: ["wait-for-it.sh", "mysql", "--", "docker-entrypoint.sh"] 
     command: ["node", "current/index.js"]
   gatsby: 
-    build: ./ghost
+    build: 
+      context: gatsby
     ports:
       - "8000:8000"
       - "9929:9929"
       - "9230:9230"
-      - "2368:2368"
     volumes:
       - /app/node_modules
       - ./gatsby:/app

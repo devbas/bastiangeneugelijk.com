@@ -1,161 +1,254 @@
-const Promise = require('bluebird');
-const ContentAPI = require('./content-api');
-const {PostNode, PageNode, TagNode, AuthorNode, SettingsNode, fakeNodes} = require('./ghost-nodes');
-const _ = require(`lodash`);
-const cheerio = require(`cheerio`);
-
-const parseCodeinjection = (html) => {
-    let $ = null;
-
-    try {
-        $ = cheerio.load(html, {decodeEntities: false});
-    } catch (e) {
-        return {};
-    }
-
-    const $parsedStyles = $(`style`);
-    const codeInjObj = {};
-
-    $parsedStyles.each((i, style) => {
-        if (i === 0) {
-            codeInjObj.styles = $(style).html();
-        } else {
-            codeInjObj.styles += $(style).html();
-        }
-    });
-
-    return codeInjObj;
-};
-
-const transformCodeinjection = (posts) => {
-    posts.map((post) => {
-        const allCodeinjections = [post.codeinjection_head, post.codeinjection_foot].join('');
-
-        if (!allCodeinjections) {
-            return post;
-        }
-
-        const headInjection = parseCodeinjection(allCodeinjections);
-
-        if (_.isEmpty(post.codeinjection_styles)) {
-            post.codeinjection_styles = headInjection.styles;
-        } else {
-            post.codeinjection_styles += headInjection.styles;
-        }
-
-        post.codeinjection_styles = _.isNil(post.codeinjection_styles) ? '' : post.codeinjection_styles;
-
-        return post;
-    });
-
-    return posts;
-};
+const path = require(`path`)
+const { postsPerPage } = require(`./src/utils/siteConfig`)
+const { paginate } = require(`gatsby-awesome-pagination`)
 
 /**
- * Create Live Ghost Nodes
- * Uses the Ghost Content API to fetch all posts, pages, tags, authors and settings
- * Creates nodes for each record, so that they are all available to Gatsby
+ * Here is the place where Gatsby creates the URLs for all the
+ * posts, tags, pages and authors that we fetched from the Ghost site.
  */
-const createLiveGhostNodes = ({actions}, configOptions) => {
-    const {createNode} = actions;
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions
 
-    const api = ContentAPI.configure(configOptions);
-
-    const postAndPageFetchOptions = {
-        limit: 'all',
-        include: 'tags,authors',
-        formats: 'html,plaintext'
-    };
-
-    const fetchPosts = api.posts.browse(postAndPageFetchOptions).then((posts) => {
-        posts = transformCodeinjection(posts);
-        posts.forEach(post => createNode(PostNode(post)));
-    });
-
-    const fetchPages = api.pages.browse(postAndPageFetchOptions).then((pages) => {
-        pages.forEach(page => createNode(PageNode(page)));
-    });
-
-    const tagAndAuthorFetchOptions = {
-        limit: 'all',
-        include: 'count.posts'
-    };
-
-    const fetchTags = api.tags.browse(tagAndAuthorFetchOptions).then((tags) => {
-        tags.forEach((tag) => {
-            tag.postCount = tag.count.posts;
-            createNode(TagNode(tag));
-        });
-    });
-
-    const fetchAuthors = api.authors.browse(tagAndAuthorFetchOptions).then((authors) => {
-        authors.forEach((author) => {
-            author.postCount = author.count.posts;
-            createNode(AuthorNode(author));
-        });
-    });
-
-    const fetchSettings = api.settings.browse().then((setting) => {
-        const codeinjectionHead = setting.codeinjection_head || setting.ghost_head;
-        const codeinjectionFoot = setting.codeinjection_foot || setting.ghost_foot;
-        const allCodeinjections = codeinjectionHead ? codeinjectionHead.concat(codeinjectionFoot) :
-            codeinjectionFoot ? codeinjectionFoot : null;
-
-        if (allCodeinjections) {
-            const parsedCodeinjections = parseCodeinjection(allCodeinjections);
-
-            if (_.isEmpty(setting.codeinjection_styles)) {
-                setting.codeinjection_styles = parsedCodeinjections.styles;
-            } else {
-                setting.codeinjection_styles += parsedCodeinjections.styles;
+  const result = await graphql(`
+        {
+            allGhostPost(sort: { order: ASC, fields: published_at }) {
+                edges {
+                    node {
+                        slug
+                    }
+                }
+            }
+            allGhostTag(sort: { order: ASC, fields: name }) {
+                edges {
+                    node {
+                        slug
+                        url
+                        postCount
+                    }
+                }
+            }
+            allGhostAuthor(sort: { order: ASC, fields: name }) {
+                edges {
+                    node {
+                        slug
+                        url
+                        postCount
+                    }
+                }
+            }
+            allGhostPage(sort: { order: ASC, fields: published_at }) {
+                edges {
+                    node {
+                        slug
+                        url
+                        tags {
+                      	  id
+                          slug
+                      	}
+                    }
+                }
             }
         }
+    `)
 
-        setting.codeinjection_styles = _.isNil(setting.codeinjection_styles) ? '' : setting.codeinjection_styles;
-        // The settings object doesn't have an id, prevent Gatsby from getting 'undefined'
-        setting.id = 1;
-        createNode(SettingsNode(setting));
-    });
+  // Check for any errors
+  if (result.errors) {
+    throw new Error(result.errors)
+  }
 
-    return Promise.all([fetchPosts, fetchPages, fetchTags, fetchAuthors, fetchSettings]);
-};
+  // Extract query results
+  const tags = result.data.allGhostTag.edges
+  const authors = result.data.allGhostAuthor.edges
+  const pages = result.data.allGhostPage.edges
+  const posts = result.data.allGhostPost.edges
 
-/**
- * Create Temporary Fake Nodes
- * Refs: https://github.com/gatsbyjs/gatsby/issues/10856#issuecomment-451701011
- * Ensures that Gatsby knows about every field in the Ghost schema
- */
-const createTemporaryFakeNodes = ({emitter, actions}) => {
-    // Setup our temporary fake nodes
-    fakeNodes.forEach((node) => {
-        // createTemporaryFakeNodes is called twice. The second time, the node already has an owner
-        // This triggers an error, so we clean the node before trying again
-        delete node.internal.owner;
-        actions.createNode(node);
-    });
+  // Load templates
+  const indexTemplate = path.resolve(`./src/templates/index.js`)
+  const tagsTemplate = path.resolve(`./src/templates/tag.js`)
+  const authorTemplate = path.resolve(`./src/templates/author.js`)
+  const pageTemplate = path.resolve(`./src/templates/page.js`)
+  const postTemplate = path.resolve(`./src/templates/post.js`)
 
-    const onSchemaUpdate = () => {
-        // Destroy our temporary fake nodes
-        fakeNodes.forEach((node) => {
-            actions.deleteNode({node});
-        });
-        emitter.off(`SET_SCHEMA`, onSchemaUpdate);
-    };
+  // Load custom templates
+  const blogTemplate = path.resolve(`./src/templates/blog.js`)
 
-    // Use a Gatsby internal API to cleanup our Fake Nodes
-    emitter.on(`SET_SCHEMA`, onSchemaUpdate);
-};
+  // Create tag pages
+  tags.forEach(({ node }) => {
+    const totalPosts = node.postCount !== null ? node.postCount : 0
+    const numberOfPages = Math.ceil(totalPosts / postsPerPage)
 
-// Standard way to create nodes
-exports.sourceNodes = ({emitter, actions}, configOptions) => {
-    // These temporary nodes ensure that Gatsby knows about every field in the Ghost Schema
-    createTemporaryFakeNodes({emitter, actions});
+    // This part here defines, that our tag pages will use
+    // a `/tag/:slug/` permalink.
+    node.url = `/tag/${node.slug}/`
 
-    // Go and fetch live data, and populate the nodes
-    return createLiveGhostNodes({actions}, configOptions);
-};
+    Array.from({ length: numberOfPages }).forEach((_, i) => {
+      const currentPage = i + 1
+      const prevPageNumber = currentPage <= 1 ? null : currentPage - 1
+      const nextPageNumber =
+        currentPage + 1 > numberOfPages ? null : currentPage + 1
+      const previousPagePath = prevPageNumber
+        ? prevPageNumber === 1
+          ? node.url
+          : `${node.url}page/${prevPageNumber}/`
+        : null
+      const nextPagePath = nextPageNumber
+        ? `${node.url}page/${nextPageNumber}/`
+        : null
 
-// Secondary point in build where we have to create fake Nodes
-exports.onPreExtractQueries = ({emitter, actions}) => {
-    createTemporaryFakeNodes({emitter, actions});
-};
+      createPage({
+        path: i === 0 ? node.url : `${node.url}page/${i + 1}/`,
+        component: tagsTemplate,
+        context: {
+          // Data passed to context is available
+          // in page queries as GraphQL variables.
+          slug: node.slug,
+          limit: postsPerPage,
+          skip: i * postsPerPage,
+          numberOfPages: numberOfPages,
+          humanPageNumber: currentPage,
+          prevPageNumber: prevPageNumber,
+          nextPageNumber: nextPageNumber,
+          previousPagePath: previousPagePath,
+          nextPagePath: nextPagePath,
+        },
+      })
+    })
+  })
+
+  // Create author pages
+  authors.forEach(({ node }) => {
+    const totalPosts = node.postCount !== null ? node.postCount : 0
+    const numberOfPages = Math.ceil(totalPosts / postsPerPage)
+
+    // This part here defines, that our author pages will use
+    // a `/author/:slug/` permalink.
+    node.url = `/author/${node.slug}/`
+
+    Array.from({ length: numberOfPages }).forEach((_, i) => {
+      const currentPage = i + 1
+      const prevPageNumber = currentPage <= 1 ? null : currentPage - 1
+      const nextPageNumber =
+        currentPage + 1 > numberOfPages ? null : currentPage + 1
+      const previousPagePath = prevPageNumber
+        ? prevPageNumber === 1
+          ? node.url
+          : `${node.url}page/${prevPageNumber}/`
+        : null
+      const nextPagePath = nextPageNumber
+        ? `${node.url}page/${nextPageNumber}/`
+        : null
+
+      createPage({
+        path: i === 0 ? node.url : `${node.url}page/${i + 1}/`,
+        component: authorTemplate,
+        context: {
+          // Data passed to context is available
+          // in page queries as GraphQL variables.
+          slug: node.slug,
+          limit: postsPerPage,
+          skip: i * postsPerPage,
+          numberOfPages: numberOfPages,
+          humanPageNumber: currentPage,
+          prevPageNumber: prevPageNumber,
+          nextPageNumber: nextPageNumber,
+          previousPagePath: previousPagePath,
+          nextPagePath: nextPagePath,
+        },
+      })
+    })
+  })
+
+  // Create pages
+  pages.forEach(({ node }) => {
+    // This part here defines, that our pages will use
+    // a `/:slug/` permalink.
+    node.url = `/${node.slug}/`
+    console.log({ slug: node.slug })
+    if (node.slug === 'basic-page') {
+      const totalPosts = node.postCount !== null ? node.postCount : 0
+      const numberOfPages = Math.ceil(totalPosts / postsPerPage)
+
+      Array.from({ length: numberOfPages }).forEach((_, i) => {
+        const currentPage = i + 1
+        const prevPageNumber = currentPage <= 1 ? null : currentPage - 1
+        const nextPageNumber =
+          currentPage + 1 > numberOfPages ? null : currentPage + 1
+        const previousPagePath = prevPageNumber
+          ? prevPageNumber === 1
+            ? node.url
+            : `${node.url}page/${prevPageNumber}/`
+          : null
+        const nextPagePath = nextPageNumber
+          ? `${node.url}page/${nextPageNumber}/`
+          : null
+
+        createPage({
+          path: i === 0 ? node.url : `${node.url}page/${i + 1}/`,
+          component: blogTemplate,
+          context: {
+            // Data passed to context is available
+            // in page queries as GraphQL variables.
+            slug: node.slug,
+            limit: postsPerPage,
+            skip: i * postsPerPage, 
+            numberOfPages: numberOfPages,
+            humanPageNumber: currentPage,
+            prevPageNumber: prevPageNumber,
+            nextPageNumber: nextPageNumber,
+            previousPagePath: previousPagePath,
+            nextPagePath: nextPagePath,
+          },
+        })
+      })
+    } else {
+      createPage({
+        path: node.url,
+        component: pageTemplate,
+        context: {
+          // Data passed to context is available
+          // in page queries as GraphQL variables.
+          slug: node.slug,
+        },
+      })
+    }
+    
+  })
+
+  // Create post pages
+  posts.forEach(({ node }) => {
+    // This part here defines, that our posts will use
+    // a `/:slug/` permalink.
+    node.url = `/${node.slug}/`
+
+    createPage({
+      path: node.url,
+      component: postTemplate,
+      context: {
+        // Data passed to context is available
+        // in page queries as GraphQL variables.
+        slug: node.slug,
+      },
+    })
+  })
+
+  // Create pagination
+  paginate({
+    createPage,
+    items: posts,
+    itemsPerPage: postsPerPage,
+    component: indexTemplate,
+    pathPrefix: ({ pageNumber }) => {
+      if (pageNumber === 0) {
+        return `/`
+      } else {
+        return `/page`
+      }
+    },
+  })
+}
+
+exports.onCreateWebpackConfig = ({ actions }) => {
+  actions.setWebpackConfig({
+    devtool: 'eval-source-map',
+  })
+}
