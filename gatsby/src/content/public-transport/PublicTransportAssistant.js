@@ -8,8 +8,8 @@ const PublicTransportAssistant = ({ html, title }) => {
       <Helmet>
         
         <script src="/js/turf.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-	      <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" async></script>
+	      <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.js" async></script>
         <link href="/css/ovassistant.css" rel='stylesheet' />
 	      <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css" rel='stylesheet' />
         <script src="/js/svg4everybody.js"></script>
