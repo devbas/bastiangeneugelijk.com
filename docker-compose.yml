@@ -11,6 +11,22 @@ services:
     image: mysql:5.7
     volumes:
       - 'mysql-volume:/var/lib/mysql'
+  # ghost:
+  #   env_file: 
+  #     - .env
+  #   build: ./ghost 
+  #   image: lvthillo/ghost:1.20.0 
+  #   container_name: ghost
+  #   volumes:
+  #     - ghost-volume:/var/lib/ghost
+  #     - ./ghost/themes/personal:/var/lib/ghost/content/themes/personal
+  #   restart: always
+  #   ports: 
+  #     - 127.0.0.1:2368:2368
+  #   depends_on: 
+  #     - mysql 
+  #   entrypoint: ["wait-for-it.sh", "mysql", "--", "docker-entrypoint.sh"] 
+  #   command: ["node", "current/index.js"]
   ghost:
     env_file: 
       - .env
