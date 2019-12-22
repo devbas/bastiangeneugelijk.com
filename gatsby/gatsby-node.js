@@ -69,9 +69,6 @@ exports.createPages = async ({ graphql, actions }) => {
   const pageTemplate = path.resolve(`./src/templates/page.js`)
   const postTemplate = path.resolve(`./src/templates/post.js`)
 
-  // Load custom templates
-  const blogTemplate = path.resolve(`./src/templates/blog.js`)
-
   // Create tag pages
   tags.forEach(({ node }) => {
     const totalPosts = node.postCount !== null ? node.postCount : 0
@@ -164,53 +161,16 @@ exports.createPages = async ({ graphql, actions }) => {
     // a `/:slug/` permalink.
     node.url = `/${node.slug}/`
     console.log({ slug: node.slug })
-    if (node.slug === 'basic-page') {
-      const totalPosts = node.postCount !== null ? node.postCount : 0
-      const numberOfPages = Math.ceil(totalPosts / postsPerPage)
 
-      Array.from({ length: numberOfPages }).forEach((_, i) => {
-        const currentPage = i + 1
-        const prevPageNumber = currentPage <= 1 ? null : currentPage - 1
-        const nextPageNumber =
-          currentPage + 1 > numberOfPages ? null : currentPage + 1
-        const previousPagePath = prevPageNumber
-          ? prevPageNumber === 1
-            ? node.url
-            : `${node.url}page/${prevPageNumber}/`
-          : null
-        const nextPagePath = nextPageNumber
-          ? `${node.url}page/${nextPageNumber}/`
-          : null
-
-        createPage({
-          path: i === 0 ? node.url : `${node.url}page/${i + 1}/`,
-          component: blogTemplate,
-          context: {
-            // Data passed to context is available
-            // in page queries as GraphQL variables.
-            slug: node.slug,
-            limit: postsPerPage,
-            skip: i * postsPerPage, 
-            numberOfPages: numberOfPages,
-            humanPageNumber: currentPage,
-            prevPageNumber: prevPageNumber,
-            nextPageNumber: nextPageNumber,
-            previousPagePath: previousPagePath,
-            nextPagePath: nextPagePath,
-          },
-        })
-      })
-    } else {
-      createPage({
-        path: node.url,
-        component: pageTemplate,
-        context: {
-          // Data passed to context is available
-          // in page queries as GraphQL variables.
-          slug: node.slug,
-        },
-      })
-    }
+    createPage({
+      path: node.url,
+      component: pageTemplate,
+      context: {
+        // Data passed to context is available
+        // in page queries as GraphQL variables.
+        slug: node.slug
+      }
+    })
     
   })
 

@@ -20,7 +20,7 @@ const ProjectCard = ({ node, key }) => {
               </div>
               <div className="visible-xs">
 								<div className="overview-project-title h3">
-										Public Transport Assistant
+                  {node.title}
 								</div>
 							</div>
             </div>

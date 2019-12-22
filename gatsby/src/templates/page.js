@@ -17,7 +17,7 @@ import { PublicTransportAssistant } from '../content/'
 const Page = ({ data, location }) => {
   const page = data.ghostPage
   const tags = data.ghostPage.tags
-  console.log({ tags: data.ghostPage.tags })
+
   return (
     <>
       <MetaData
@@ -33,22 +33,27 @@ const Page = ({ data, location }) => {
         />
       }
 
-      {!tags.some(tag => tag.slug === 'project') &&
+      {!tags.some(tag => tag.slug === 'public_transport_assistant') &&
         <>
           <Helmet>
             <style type="text/css">{`${page.codeinjection_styles}`}</style>
           </Helmet>
           <Layout>
             <div className="container">
-              <article className="content">
-                <h1 className="content-title">{page.title}</h1>
-
-                {/* The main page content */}
-                <section
-                  className="content-body load-external-scripts"
-                  dangerouslySetInnerHTML={{ __html: page.html }}
-                />
-              </article>
+              <div className="row">
+                <div className="col-md-offset-2 col-md-8 col-xs-12">
+                  <div className="pull-left full-width">
+                    <article className="single-project-text">
+                      <div className="single-project-title">
+                        <section
+                          className="content-body load-external-scripts"
+                          dangerouslySetInnerHTML={{ __html: page.html }}
+                        />
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </div>
             </div>
           </Layout>
         </>

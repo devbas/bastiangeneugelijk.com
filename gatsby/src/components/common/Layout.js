@@ -10,7 +10,6 @@ import config from '../../utils/siteConfig'
 // Styles
 import '../../styles/screen.css'
 import '../../styles/bootstrap.min.css'
-import '../../styles/highlightjs-tomorrow-night-blue.css'
 
 /**
 * Main layout component
@@ -67,18 +66,20 @@ const DefaultLayout = ({ data, children, bodyClass, isHome }) => {
 
         <div className="viewport-bottom">
           {/* The footer at the very bottom of the screen */}
-          <div className="row">
-            <div className="col-md-8 col-md-offset-2">
-              <div className="connect-intro">
-                <h3>Connect</h3><br/>
-                <button><a href="mailto:bastiangeneugelijk@me.com">Send me an email</a></button>
-                <a href="https://twitter.com/BGeneugelijk"><div className="twitter-icon"></div></a>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8 col-md-offset-2">
+                <div className="connect-intro">
+                  <h3>Connect</h3><br/>
+                  <button><a href="mailto:bastiangeneugelijk@me.com">Send me an email</a></button>
+                  <a href="https://twitter.com/BGeneugelijk"><div className="twitter-icon"></div></a>
+                </div>
               </div>
             </div>
-          </div>
-          
-          <footer></footer>
 
+          </div>    
+          <footer></footer>
+        
         </div>
       </div>
 
