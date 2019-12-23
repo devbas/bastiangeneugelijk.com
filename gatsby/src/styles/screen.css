@@ -84,7 +84,7 @@ header.project-page:hover .header-profile-small-border {
 
 .header-profile-small-title, .header-profile-small-title a, .header-profile-small-title a:visited {
 	font-size: 23px;
-	color: #f1f1f1;
+	color: #f1f1f1 !important;
 }
 
 .header-profile-small-title a:hover {
