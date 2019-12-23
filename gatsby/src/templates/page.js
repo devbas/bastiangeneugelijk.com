@@ -8,6 +8,8 @@ import { MetaData } from '../components/common/meta'
 
 import { PublicTransportAssistant } from '../content/'
 
+import '../styles/animate.css'
+
 /**
 * Single page (/:slug)
 *
@@ -39,22 +41,23 @@ const Page = ({ data, location }) => {
             <style type="text/css">{`${page.codeinjection_styles}`}</style>
           </Helmet>
           <Layout>
-            <div className="container">
-              <div className="row">
-                <div className="col-md-offset-2 col-md-8 col-xs-12">
-                  <div className="pull-left full-width">
-                    <article className="single-project-text">
-                      <div className="single-project-title">
+            <article className="single-project-text">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-offset-2 col-md-8 col-xs-12">
+                    <div className="pull-left full-width">
+                      <div className="single-project-title full-width">
                         <section
                           className="content-body load-external-scripts"
                           dangerouslySetInnerHTML={{ __html: page.html }}
                         />
                       </div>
-                    </article>
+                      
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </article>
           </Layout>
         </>
       }

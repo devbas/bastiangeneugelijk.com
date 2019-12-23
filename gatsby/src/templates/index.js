@@ -65,7 +65,13 @@ const Index = ({ data, location, pageContext }) => {
             <ProjectCard node={node} key={node.id}/>
           ))}
 
-          {/* <div className="row">
+        </div>
+      </section>
+
+      <div className="viewport-bottom">
+        {/* The footer at the very bottom of the screen */}
+        <div className="container">
+          <div className="row">
             <div className="col-md-8 col-md-offset-2">
               <div className="connect-intro">
                 <h3>Connect</h3><br/>
@@ -73,10 +79,13 @@ const Index = ({ data, location, pageContext }) => {
                 <a href="https://twitter.com/BGeneugelijk"><div className="twitter-icon"></div></a>
               </div>
             </div>
-          </div> */}
+          </div>
 
-        </div>
-      </section>
+        </div>    
+        <footer></footer>
+      
+      </div>
+
     </>
   )
 };

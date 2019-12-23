@@ -17,6 +17,7 @@ const ProjectCard = ({ node, key }) => {
 					<div className="row">
 						<div className="col-md-2 col-xs-12 col-sm-2">
 							<div className="overview-project-icon concept-project-icon-background">
+                <img src={node.feature_image}/>
               </div>
               <div className="visible-xs">
 								<div className="overview-project-title h3">

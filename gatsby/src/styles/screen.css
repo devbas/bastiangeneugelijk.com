@@ -398,6 +398,11 @@ footer {
 	background-color: #B0B3BB; 
 }
 
+.concept-project-icon-background img {
+	width: 100%;
+	border-radius: 3px; 
+}
+
 .ov-assistant-icon-background {
 	background-image: url('../images/ovassistant-icon.png');
 	background-size: cover; 
@@ -728,6 +733,20 @@ pre > code {
 .kg-card.kg-image-card img {
 	width: 100%;
 } 
+
+.gatsby-highlight {
+  background-color: #1d1f21;
+  border-radius: 0.3em;
+  margin: 0.5em 0;
+  padding: 1em;
+  overflow: auto;
+}
+
+.gatsby-highlight pre[class*="language-"].line-numbers {
+  padding: 0;
+  padding-left: 2.8em;
+  overflow: initial;
+}
 
 @media (min-width: 992px) and (max-width: 1199px){
 
