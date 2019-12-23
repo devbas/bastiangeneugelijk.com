@@ -446,6 +446,10 @@ footer {
 	font-weight: 400;
 }
 
+.content-body a, .content-body a:visited {
+	text-decoration: underline; 
+}
+
 .single-project-text p, .single-project-text ul {
 	line-height: 29px;
 	font-size: 18px; 

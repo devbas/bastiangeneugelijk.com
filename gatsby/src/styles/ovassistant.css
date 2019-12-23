@@ -83,7 +83,7 @@ svg {
 .disruption-status .green-flag-icon {
   width: 25px; 
   height: 25px; 
-  background-image: url('/img/accuracy.svg'); 
+  background-image: url('../images/accuracy.svg'); 
   background-size: contain; 
   background-repeat: no-repeat;
   float: left; 
@@ -92,7 +92,7 @@ svg {
 .disruption-status .yellow-flag-icon {
   width: 25px; 
   height: 25px; 
-  background-image: url('/img/accuracy-yellow.svg'); 
+  background-image: url('../images/accuracy-yellow.svg'); 
   background-size: contain; 
   background-repeat: no-repeat;
   float: left; 
@@ -262,7 +262,7 @@ svg {
 } */
 
 .visualization-loading {
-  background-image: url(/img/spinner-1s-200px.svg); 
+  background-image: url(../images/spinner-1s-200px.svg); 
   width: 40px; 
   height: 40px; 
   margin-left: auto; 
@@ -285,7 +285,7 @@ svg {
 }
 
 #loading-box .loader {
-  background-image: url(/img/spinner-1s-200px.svg); 
+  background-image: url(../images/spinner-1s-200px.svg); 
   width: 50px; 
   height: 50px; 
   background-size: contain;
@@ -313,7 +313,7 @@ svg {
 }
 
 .ov-proactive-functionality-image {
-  background-image: url(/img/ov-proactive-functionality.svg); 
+  background-image: url(../images/ov-proactive-functionality.svg); 
   width: 100%; 
   height: 270px;
   background-size: contain; 
@@ -322,7 +322,7 @@ svg {
 }
 
 .ov-receive-reminders-image {
-  background-image: url(/img/ov-receive-reminders.svg); 
+  background-image: url(../images/ov-receive-reminders.svg); 
   width: 100%; 
   height: 270px;
   background-size: contain; 
@@ -331,7 +331,7 @@ svg {
 }
 
 .ov-share-trip-image {
-  background-image: url(/img/ov-share-trip.svg); 
+  background-image: url(../images/ov-share-trip.svg); 
   width: 100%; 
   height: 270px;
   background-size: contain; 
@@ -342,7 +342,7 @@ svg {
 }
 
 .ov-plan-trip-image {
-  background-image: url(/img/ov-plan-trip.svg); 
+  background-image: url(../images/ov-plan-trip.svg); 
   width: 100%; 
   height: 270px;
   background-size: contain; 
@@ -353,7 +353,7 @@ svg {
 }
 
 .ov-send-message-image {
-  background-image: url(/img/ov-send-message.svg); 
+  background-image: url(../images/ov-send-message.svg); 
   width: 100%; 
   height: 270px;
   background-size: contain; 
@@ -364,7 +364,7 @@ svg {
 }
 
 .ov-order-food-image {
-  background-image: url(/img/ov-order-food.svg); 
+  background-image: url(../images/ov-order-food.svg); 
   width: 100%; 
   height: 270px;
   background-size: contain; 
@@ -423,7 +423,7 @@ svg {
 }
 
 .destination-home-box .image {
-  background-image: url(/img/destination-card-home.svg); 
+  background-image: url(../images/destination-card-home.svg); 
   background-size: contain; 
   width: 88px; 
   height: 88px; 
@@ -431,7 +431,7 @@ svg {
 }
 
 .destination-work-box .image {
-  background-image: url(/img/destination-card-work.svg); 
+  background-image: url(../images/destination-card-work.svg); 
   background-size: contain; 
   width: 88px; 
   height: 88px; 

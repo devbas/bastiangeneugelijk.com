@@ -3,6 +3,10 @@ import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { Layout } from '../../components/common'
 
+import '../../styles/ovassistant.css'
+
+// @import url('/css/ovassistant.css');
+
 const PublicTransportAssistant = ({ html, title }) => {
   return (
     <>
@@ -13,7 +17,6 @@ const PublicTransportAssistant = ({ html, title }) => {
 	      <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.js"></script>
         {/* <link href="/css/ovassistant.css" rel='stylesheet' /> */}
         <style type="text/css">
-          @import url('/css/ovassistant.css');
           @import url('https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css');
         </style>
 	      {/* <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css" rel='stylesheet' /> */}

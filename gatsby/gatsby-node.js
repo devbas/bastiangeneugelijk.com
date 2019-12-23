@@ -1,6 +1,7 @@
 const path = require(`path`)
 const { postsPerPage } = require(`./src/utils/siteConfig`)
 const { paginate } = require(`gatsby-awesome-pagination`)
+const express = require('express')
 
 /**
  * Here is the place where Gatsby creates the URLs for all the
@@ -210,4 +211,8 @@ exports.onCreateWebpackConfig = ({ actions }) => {
   actions.setWebpackConfig({
     devtool: 'eval-source-map',
   })
+}
+
+exports.onCreateDevServer=({ app })=>{
+  app.use(express.static('static'))
 }
