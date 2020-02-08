@@ -6,7 +6,7 @@ import Helmet from 'react-helmet'
 import { Layout } from '../components/common'
 import { MetaData } from '../components/common/meta'
 
-import { PublicTransportAssistant } from '../content/'
+import { PublicTransportAssistant, ClassificationTheory } from '../content/'
 
 import '../styles/animate.css'
 
@@ -35,7 +35,14 @@ const Page = ({ data, location }) => {
         />
       }
 
-      {!tags.some(tag => tag.slug === 'public_transport_assistant') &&
+      {tags.some(tag => tag.slug === 'classification_theory') &&
+        <ClassificationTheory
+          html={page.html}
+          title={page.title}
+        />
+      }
+
+      {!tags.some(tag => tag.slug === 'public_transport_assistant') && !tags.some(tag => tag.slug === 'classification_theory') &&
         <>
           <Helmet>
             <style type="text/css">{`${page.codeinjection_styles}`}</style>
